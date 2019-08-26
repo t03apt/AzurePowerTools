@@ -18,9 +18,8 @@ $allSubs = Get-AzureRmSubscription
 $allSubs | Sort-Object Name | Format-Table -Property Name, SubscriptionId, State
 
 
-$theSub = Read-Host "Enter the subscriptionId you want to clean"
+$theSub = 'c7f68dfc-ea3e-47d0-9add-34296b010ee7'
 
-Write-Host "You select the following subscription. (it will be display 15 sec.)" -ForegroundColor Cyan
 Get-AzureRmSubscription -SubscriptionId $theSub | Select-AzureRmSubscription 
 
 # Get all the resources groups
@@ -43,7 +42,7 @@ foreach ( $g in $allRG){
     Write-Host "`n`n------------------------------------------------------" -ForegroundColor Yellow 
 }
 
-exit
+#exit
 
 $lastValidation = Read-Host "Do you wich to delete ALL the resouces previously listed? (YES/ NO)"
 
@@ -53,7 +52,7 @@ if($lastValidation.ToLower().Equals("yes")){
 
         Write-Host "Deleting " $g.ResourceGroupName 
         # Last safety, you need to remove the -WhatIf parameter to really delete the resources
-        Remove-AzureRmResourceGroup -Name $g.ResourceGroupName -Force -WhatIf
+        Remove-AzureRmResourceGroup -Name $g.ResourceGroupName -Force -AsJob #-WhatIf
 
     }
 }else{
